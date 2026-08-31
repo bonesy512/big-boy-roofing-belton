@@ -71,7 +71,7 @@ export default function HeroSection() {
 
           {/* Subheadline */}
           <p className="text-base sm:text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
-            Belton&apos;s honest, hard-working roofing crew led by Juan Barron & Austin Farr. From emergency leak repairs to complete IKO architectural shingle replacements and insurance claim walkthroughs. Free honest inspections, zero pressure.
+            Belton's honest, hard-working roofing crew led by Juan Barron & Austin Farr. From emergency leak repairs to complete IKO architectural shingle replacements and insurance claim walkthroughs. Free honest inspections, zero pressure.
           </p>
 
           {/* Centered Dual CTAs */}

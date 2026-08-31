@@ -96,7 +96,7 @@ export default async function Image() {
               letterSpacing: "-2px",
             }}
           >
-            Belton&apos;s Tough, Trusted Roofing & Hail Restoration.
+            Belton's Tough, Trusted Roofing & Hail Restoration.
           </div>
           <div
             style={{

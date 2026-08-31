@@ -117,7 +117,7 @@ export default function QuoteFormSection() {
             </h2>
 
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              Whether you suspect recent Bell County hail damage, noticed missing shingle tabs, or need an honest second opinion before speaking to your insurance company—we&apos;re here for you.
+              Whether you suspect recent Bell County hail damage, noticed missing shingle tabs, or need an honest second opinion before speaking to your insurance company—we're here for you.
             </p>
 
             {/* Benefit Bullets */}
@@ -390,7 +390,7 @@ export default function QuoteFormSection() {
                   {/* Privacy & Reassurance Microcopy */}
                   <div className="flex items-center justify-center gap-2 text-center text-[11px] text-slate-400 pt-1">
                     <Lock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                    <span>🔒 100% Free • No Obligation • Dispatched to Juan & Austin&apos;s Local Crew</span>
+                    <span>🔒 100% Free • No Obligation • Dispatched to Juan & Austin's Local Crew</span>
                   </div>
                 </form>
               )}

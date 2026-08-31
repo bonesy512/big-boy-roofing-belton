@@ -40,13 +40,13 @@ export default function BigBoyStandard() {
       icon: MapPin,
       title: "Belton Physical Base (Not Storm Chasers)",
       description:
-        "Our shop is located at 2012 S Wall St in Belton, TX. We don&apos;t chase hail storms and disappear out of state. We live and work in Bell County.",
+        "Our shop is located at 2012 S Wall St in Belton, TX. We don't chase hail storms and disappear out of state. We live and work in Bell County.",
     },
     {
       icon: ShieldCheck,
       title: "Lifetime Craftsmanship Warranty",
       description:
-        "We stand 100% behind our nail placement, valley cuts, and flashing seals. If there&apos;s ever an issue, Juan and Austin come back and make it right.",
+        "We stand 100% behind our nail placement, valley cuts, and flashing seals. If there's ever an issue, Juan and Austin come back and make it right.",
     },
   ];
 

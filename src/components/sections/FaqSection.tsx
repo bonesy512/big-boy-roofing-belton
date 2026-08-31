@@ -20,17 +20,17 @@ const faqs = [
   {
     question: "Will my insurance rates increase if I file a hail damage claim in Texas?",
     answer:
-      "In Texas, hail and wind storms are classified as 'Acts of God' or natural occurrences outside your control. Insurance carriers generally cannot single you out for rate increases based solely on a storm claim. Instead, rates in an entire ZIP code are adjusted based on regional weather patterns. If everyone in your neighborhood is getting new roofs approved and you don&apos;t file, you may be paying higher premiums without receiving the benefits.",
+      "In Texas, hail and wind storms are classified as 'Acts of God' or natural occurrences outside your control. Insurance carriers generally cannot single you out for rate increases based solely on a storm claim. Instead, rates in an entire ZIP code are adjusted based on regional weather patterns. If everyone in your neighborhood is getting new roofs approved and you don't file, you may be paying higher premiums without receiving the benefits.",
   },
   {
     question: "Do you charge anything for your drone and roof inspections?",
     answer:
-      "No. Our 21-point roof and attic inspections are 100% free with zero obligation. We provide high-resolution photos and honest assessment notes. If your roof is in great shape, we&apos;ll tell you so you have peace of mind. If there is damage, we outline your options clearly.",
+      "No. Our 21-point roof and attic inspections are 100% free with zero obligation. We provide high-resolution photos and honest assessment notes. If your roof is in great shape, we'll tell you so you have peace of mind. If there is damage, we outline your options clearly.",
   },
   {
     question: "Why is it important to have Big Boy Roofing present when the insurance adjuster visits?",
     answer:
-      "Insurance adjusters inspect dozens of storm-damaged homes each week. Having Juan Barron or Austin Farr on your roof with safety gear ensures that all damage—including valley metal, chimney crickets, ridge caps, and pipe boots—is documented on the spot. We speak the adjuster&apos;s language, share Xactimate line-item estimates, and advocate for full, fair claim coverage.",
+      "Insurance adjusters inspect dozens of storm-damaged homes each week. Having Juan Barron or Austin Farr on your roof with safety gear ensures that all damage—including valley metal, chimney crickets, ridge caps, and pipe boots—is documented on the spot. We speak the adjuster's language, share Xactimate line-item estimates, and advocate for full, fair claim coverage.",
   },
   {
     question: "Why does Big Boy Roofing recommend and install IKO shingle systems?",
@@ -43,9 +43,9 @@ const faqs = [
       "Most residential roof replacements in Belton, Temple, and Salado are completed in just 1 to 2 days. Our crew arrives early, covers your siding, landscaping, and AC units with protective tarps, tears off old materials down to the decking, makes necessary wood repairs, installs the new roofing system, and conducts double magnetic yard sweeps before leaving.",
   },
   {
-    question: "How do you guarantee that nails won&apos;t puncture my car tires or hurt pets?",
+    question: "How do you guarantee that nails won't puncture my car tires or hurt pets?",
     answer:
-      "We use high-power magnetic rolling sweepers designed specifically for roofing debris. We sweep driveways, walkways, flowerbeds, and perimeter grass twice—once immediately after tear-off and once after final shingle installation. That&apos;s part of our Big Boy Standard.",
+      "We use high-power magnetic rolling sweepers designed specifically for roofing debris. We sweep driveways, walkways, flowerbeds, and perimeter grass twice—once immediately after tear-off and once after final shingle installation. That's part of our Big Boy Standard.",
   },
 ];
 

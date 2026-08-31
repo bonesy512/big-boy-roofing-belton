@@ -145,10 +145,10 @@ export default function InsuranceWalkthrough() {
                 No Pressure • Homeowner Advocates
               </Badge>
               <h3 className="text-2xl sm:text-3xl font-black text-white">
-                “We climb your roof so you don&apos;t have to negotiate alone.”
+                “We climb your roof so you don't have to negotiate alone.”
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Insurance adjusters are busy and often inspect 5-8 roofs a day in storm zones. If a contractor isn&apos;t there to point out cracked shingles, soft decking, and damaged flashing, you risk partial denials. Big Boy Roofing acts as your local advocate every step of the way.
+                Insurance adjusters are busy and often inspect 5-8 roofs a day in storm zones. If a contractor isn't there to point out cracked shingles, soft decking, and damaged flashing, you risk partial denials. Big Boy Roofing acts as your local advocate every step of the way.
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
                 <Button asChild variant="hazard" size="default">
