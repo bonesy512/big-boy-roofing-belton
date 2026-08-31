@@ -1,0 +1,65 @@
+{
+  "title": "Big Boy Roofing",
+  "categoryName": "Roofing Contractor & Exterior Restoration",
+  "tagline": "Built for the People!",
+  "founders": ["Juan Barron", "Austin Farr", "Saul"],
+  "email": "Juanbarron1214@gmail.com",
+  "phone": "(254) 239-4393",
+  "phoneRaw": "+12542394393",
+  "address": "2012 S Wall St, Belton, TX 76513",
+  "domainTarget": "www.bigboyroofingbelton.com",
+  "socialProof": {
+    "googleRating": 4.8,
+    "googleReviews": 21,
+    "facebookFollowers": 871,
+    "facebookRecommendation": "96% (16 Reviews)"
+  },
+  "verifiedReviews": [
+    {
+      "author": "Shaun Steines",
+      "badge": "Local Guide",
+      "rating": 5,
+      "text": "Overall, we were extremely satisfied with our experience with Big Boy Roofing. From the initial consultation through project completion, Austin and Juan, along with their team, were professional, responsive, and considerate.",
+      "project": "Full Roof Replacement ($20,000+)"
+    },
+    {
+      "author": "David Wilson",
+      "rating": 5,
+      "text": "Big Boy Roofing replaced my severely damaged roof (hail). Mr. Austin Farr was instrumental in assisting me with the insurance inspection/paperwork process. Kept me informed every step.",
+      "project": "Severe Hail Damage & Insurance Claim"
+    },
+    {
+      "author": "Frances Hargrow",
+      "badge": "Local Guide",
+      "rating": 5,
+      "text": "Juan and his crew are beyond fantastic. He came Monday for an estimate and his crew was here Tuesday morning. They replaced my whole roof in one day. Fast, clean, and professional.",
+      "project": "Complete 1-Day Tear-Off & Replacement"
+    },
+    {
+      "author": "Francisco Arce",
+      "badge": "Local Guide",
+      "rating": 5,
+      "text": "Fantastic experience from beginning consultation to final walkthrough. My roof, garage door, gutters, backyard shed, and patio pergola were all restored after the May 28th micro-burst.",
+      "project": "Micro-Burst Storm Restoration"
+    },
+    {
+      "author": "Pappa John",
+      "rating": 5,
+      "text": "Austin, Saul, and the crew are professional and do quality work. They tore off the old and installed new ridge vent and heat-reflecting underlay all in 14hrs.",
+      "project": "Heat-Reflecting Underlay & Ridge Vent (14-Hr Turnaround)"
+    },
+    {
+      "author": "Kevin Dang",
+      "rating": 5,
+      "text": "First time going through a roofing insurance claim and Big Boy Roofing did a splendid job explaining and working directly with our insurance carrier. Always available to answer questions.",
+      "project": "Insurance Carrier Negotiation"
+    }
+  ],
+  "materials": [
+    "IKO Architectural Shingle Systems",
+    "Heat-Reflecting Synthetic Underlayment",
+    "Continuous Ridge Vent Ventilation",
+    "Seamless Aluminum Gutters"
+  ],
+  "serviceAreas": ["Belton", "Temple", "Salado", "Killeen", "Harker Heights", "Waco", "Central Texas"]
+}
