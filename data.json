@@ -1,0 +1,29 @@
+{
+  "title": "Big Boy Roofing",
+  "categoryName": "Roofing Contractor",
+  "categories": [
+    "Roof Replacement",
+    "Storm Damage & Hail Repair",
+    "Roof Leak Repair",
+    "Gutters & Siding",
+    "Free Drone & Roof Inspection"
+  ],
+  "address": "2012 S Wall St, Belton, TX 76513",
+  "phone": "(254) 239-4393",
+  "phoneRaw": "+12542394393",
+  "totalScore": 4.8,
+  "reviewsCount": 21,
+  "city": "Belton",
+  "state": "Texas",
+  "serviceAreas": [
+    "Belton",
+    "Temple",
+    "Salado",
+    "Killeen",
+    "Harker Heights",
+    "Georgetown",
+    "Greater Austin"
+  ],
+  "hours": "7:00 AM - 7:00 PM Monday - Saturday",
+  "description": "Locally owned roofing company in Belton, TX providing residential roof replacements, emergency hail/storm damage repairs, insurance claim guidance, and free inspections across Bell County and Central Texas."
+}
