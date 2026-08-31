@@ -24,7 +24,7 @@ const RoofHeroCanvas = dynamic(
 export default function HeroSection() {
   const handleHeroCall = () => {
     try {
-      track("phone_click", { location: "hero_primary_cta", number: "(254) 239-4393" });
+      track("phone_dispatch_click", { location: "hero" });
     } catch {
       // analytics fallback
     }

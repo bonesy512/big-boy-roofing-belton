@@ -99,9 +99,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${inter.variable} ${montserrat.variable} scroll-smooth`}>
-      <head>
-        <JsonLd />
-      </head>
+      <head />
       <body className="min-h-screen bg-[#0a0d14] font-sans antialiased text-slate-100 selection:bg-amber-500 selection:text-slate-950 flex flex-col">
         <TopBanner />
         <Navbar />
@@ -109,6 +107,7 @@ export default function RootLayout({
         <Footer />
         <MobileStickyBar />
         <Toaster position="top-right" richColors theme="dark" closeButton />
+        <JsonLd />
         <Analytics />
       </body>
     </html>

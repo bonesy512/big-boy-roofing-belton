@@ -7,7 +7,7 @@ import { track } from "@vercel/analytics";
 export default function MobileStickyBar() {
   const handleStickyCall = () => {
     try {
-      track("phone_click", { location: "mobile_sticky_bar", number: "(254) 239-4393" });
+      track("phone_dispatch_click", { location: "sticky_bar" });
     } catch {}
   };
 

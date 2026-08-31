@@ -83,7 +83,7 @@ export default function QuoteFormSection() {
         });
 
         try {
-          track("quote_form_submitted", {
+          track("inspection_requested", {
             service: formData.serviceCategory,
             zip: formData.zip,
           });

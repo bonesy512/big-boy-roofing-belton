@@ -20,9 +20,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handlePhoneClick = (location: string) => {
+  const handlePhoneClick = () => {
     try {
-      track("phone_click", { location, number: "(254) 239-4393" });
+      track("phone_dispatch_click", { location: "navbar" });
     } catch {
       // analytics fallback
     }
@@ -98,7 +98,7 @@ export default function Navbar() {
         <div className="hidden sm:flex items-center gap-3">
           <a
             href="tel:+12542394393"
-            onClick={() => handlePhoneClick("navbar_desktop")}
+            onClick={handlePhoneClick}
             className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-700 hover:border-amber-500/60 text-slate-100 text-xs sm:text-sm font-bold transition-all shadow-sm group"
           >
             <div className="w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
@@ -122,7 +122,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 lg:hidden">
           <a
             href="tel:+12542394393"
-            onClick={() => handlePhoneClick("navbar_mobile_quick")}
+            onClick={handlePhoneClick}
             className="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-amber-500 text-slate-950 font-bold shadow-glow-amber"
             aria-label="Call Big Boy Roofing"
           >
@@ -167,7 +167,7 @@ export default function Navbar() {
               <a
                 href="tel:+12542394393"
                 onClick={() => {
-                  handlePhoneClick("navbar_mobile_menu");
+                  handlePhoneClick();
                   setMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-400 font-bold text-center"

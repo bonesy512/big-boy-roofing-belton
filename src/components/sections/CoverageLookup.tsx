@@ -119,12 +119,13 @@ export default function CoverageLookup() {
     const cleanZip = zipToSearch.trim();
     setZipInput(cleanZip);
 
+    try {
+      track("coverage_lookup", { zip: cleanZip });
+    } catch {}
+
     if (coverageDatabase[cleanZip]) {
       setSelectedData(coverageDatabase[cleanZip]);
       setSearched(true);
-      try {
-        track("coverage_lookup_match", { zip: cleanZip, city: coverageDatabase[cleanZip].city });
-      } catch {}
     } else if (cleanZip.length === 5) {
       // General Central Texas match
       setSelectedData({
