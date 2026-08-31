@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "Big Boy Roofing - Belton TX Trusted Roofing & Storm Restoration";
 export const size = {
   width: 1200,
@@ -72,7 +71,7 @@ export default async function Image() {
               fontSize: "18px",
             }}
           >
-            ★ 4.8 Google (21 Reviews) • 96% FB
+            4.8/5.0 Google (21 Reviews) • 96% FB
           </div>
         </div>
 

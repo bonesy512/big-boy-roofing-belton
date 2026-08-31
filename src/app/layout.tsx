@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import TopBanner from "@/components/layout/TopBanner";
 import Navbar from "@/components/layout/Navbar";
