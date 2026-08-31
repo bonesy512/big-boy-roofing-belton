@@ -15,7 +15,7 @@ const RoofHeroCanvas = dynamic(
     loading: () => (
       <div className="w-full h-[400px] md:h-[520px] flex flex-col items-center justify-center rounded-2xl bg-slate-950/60 border border-slate-800/80 animate-pulse">
         <div className="w-16 h-16 rounded-full border-2 border-amber-500/30 border-t-amber-500 animate-spin mb-3" />
-        <span className="text-xs font-mono text-slate-400">Loading 3D Architectural Roof Model...</span>
+        <span className="text-xs font-mono text-slate-400">Loading Storm & Hail Impact Simulation...</span>
       </div>
     ),
   }
@@ -113,12 +113,12 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive Model & Live Spec Card */}
+          {/* Right Column: Kinetic Storm Simulation & Spec Card */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/60 shadow-2xl p-1 backdrop-blur-md">
-              <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-amber-400">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                <span>Interactive 3D Truss</span>
+              <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-cyan-400">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                <span>Live Storm Simulation</span>
               </div>
 
               {/* R3F 3D Canvas */}

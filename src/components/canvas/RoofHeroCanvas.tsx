@@ -2,203 +2,370 @@
 
 import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-// Isometric Gable Truss & Architectural Shingle System
-function RoofStructure() {
-  const groupRef = useRef<THREE.Group>(null);
-  const shinglesRef = useRef<THREE.Group>(null);
+// 1. High-Speed Rain Streaks (LineSegments)
+function RainStreaks({ count = 600 }: { count?: number }) {
+  const lineRef = useRef<THREE.LineSegments>(null);
 
-  // Generate shingle layers on the pitch slopes
-  const shingleRows = useMemo(() => {
-    const items = [];
-    const rows = 6;
-    const cols = 5;
+  // Initialize line endpoints (2 vertices per streak)
+  const { positions, velocities, lengths } = useMemo(() => {
+    const pos = new Float32Array(count * 2 * 3);
+    const vel = new Float32Array(count);
+    const len = new Float32Array(count);
 
-    // Left Pitch (-X)
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = -1.2 + (r * 0.4);
-        const y = 1.6 - (r * 0.45);
-        const z = -1.6 + c * 0.8;
-        items.push({
-          pos: [-x, y, z] as [number, number, number],
-          rot: [0, 0, Math.PI / 4.8] as [number, number, number],
-          scale: [0.7, 0.04, 0.75] as [number, number, number],
-          isAmber: (r + c) % 5 === 0,
-        });
+    for (let i = 0; i < count; i++) {
+      const x = (Math.random() - 0.5) * 16;
+      const y = Math.random() * 12 - 3;
+      const z = (Math.random() - 0.5) * 10;
+      const streakLength = 0.4 + Math.random() * 0.45;
+      const streakVel = 16 + Math.random() * 10;
+
+      len[i] = streakLength;
+      vel[i] = streakVel;
+
+      const idx = i * 6;
+      // Start vertex
+      pos[idx] = x;
+      pos[idx + 1] = y;
+      pos[idx + 2] = z;
+
+      // End vertex (slanted by storm wind along X)
+      pos[idx + 3] = x - streakLength * 0.35;
+      pos[idx + 4] = y - streakLength;
+      pos[idx + 5] = z - streakLength * 0.1;
+    }
+
+    return { positions: pos, velocities: vel, lengths: len };
+  }, [count]);
+
+  useFrame((_, delta) => {
+    if (!lineRef.current) return;
+    const posAttr = lineRef.current.geometry.attributes.position;
+    const array = posAttr.array as Float32Array;
+
+    const dt = Math.min(delta, 0.05);
+
+    for (let i = 0; i < count; i++) {
+      const idx = i * 6;
+      const speed = velocities[i];
+      const streakLen = lengths[i];
+
+      // Update Y (falling fast) and X (slanted wind drift)
+      array[idx] -= speed * 0.35 * dt;
+      array[idx + 1] -= speed * dt;
+      array[idx + 2] -= speed * 0.1 * dt;
+
+      array[idx + 3] = array[idx] - streakLen * 0.35;
+      array[idx + 4] = array[idx + 1] - streakLen;
+      array[idx + 5] = array[idx + 2] - streakLen * 0.1;
+
+      // Boundary Wrap-around below roof impact threshold
+      if (array[idx + 1] < -3.8) {
+        const resetX = (Math.random() - 0.5) * 16 + 2.5;
+        const resetY = 7.5 + Math.random() * 4;
+        const resetZ = (Math.random() - 0.5) * 10;
+
+        array[idx] = resetX;
+        array[idx + 1] = resetY;
+        array[idx + 2] = resetZ;
+
+        array[idx + 3] = resetX - streakLen * 0.35;
+        array[idx + 4] = resetY - streakLen;
+        array[idx + 5] = resetZ - streakLen * 0.1;
       }
     }
 
-    // Right Pitch (+X)
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = -1.2 + (r * 0.4);
-        const y = 1.6 - (r * 0.45);
-        const z = -1.6 + c * 0.8;
-        items.push({
-          pos: [x, y, z] as [number, number, number],
-          rot: [0, 0, -Math.PI / 4.8] as [number, number, number],
-          scale: [0.7, 0.04, 0.75] as [number, number, number],
-          isAmber: (r * 2 + c) % 6 === 0,
-        });
-      }
-    }
-
-    return items;
-  }, []);
-
-  useFrame((state) => {
-    if (groupRef.current) {
-      // Gentle floating and subtle responsiveness to mouse
-      const mouseX = state.pointer.x * 0.35;
-      const mouseY = state.pointer.y * 0.2;
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        0.5 + mouseX + Math.sin(state.clock.elapsedTime * 0.4) * 0.08,
-        0.05
-      );
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x,
-        0.3 - mouseY + Math.cos(state.clock.elapsedTime * 0.3) * 0.05,
-        0.05
-      );
-    }
+    posAttr.needsUpdate = true;
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.2, 0]}>
-      {/* Central Ridge Beam */}
-      <mesh position={[0, 1.75, 0]}>
-        <boxGeometry args={[0.15, 0.15, 4.4]} />
+    <lineSegments ref={lineRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+      <lineBasicMaterial
+        color="#93c5fd"
+        transparent
+        opacity={0.36}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </lineSegments>
+  );
+}
+
+// 2. Central Texas Hailstones (Points)
+function Hailstones({ count = 150 }: { count?: number }) {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const { positions, velocities } = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const vel = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 14 + 1;
+      pos[i * 3 + 1] = Math.random() * 11 - 2.5;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+      vel[i] = 12 + Math.random() * 8; // High terminal velocity
+    }
+
+    return { positions: pos, velocities: vel };
+  }, [count]);
+
+  useFrame((_, delta) => {
+    if (!pointsRef.current) return;
+    const posAttr = pointsRef.current.geometry.attributes.position;
+    const array = posAttr.array as Float32Array;
+    const dt = Math.min(delta, 0.05);
+
+    for (let i = 0; i < count; i++) {
+      const idx = i * 3;
+      const speed = velocities[i];
+
+      array[idx] -= speed * 0.38 * dt; // Wind push
+      array[idx + 1] -= speed * dt; // Heavy gravity fall
+
+      // Roof threshold wrap
+      if (array[idx + 1] < -3.2) {
+        array[idx] = (Math.random() - 0.5) * 14 + 3;
+        array[idx + 1] = 7 + Math.random() * 3.5;
+        array[idx + 2] = (Math.random() - 0.5) * 8;
+      }
+    }
+
+    posAttr.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#ffffff"
+        size={0.14}
+        transparent
+        opacity={0.88}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+// 3. Roofline Impact Splashes (Points)
+function RoofImpactSplashes({ count = 180 }: { count?: number }) {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const { positions, velocities, lifeData } = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const vel = new Float32Array(count * 3);
+    const life = new Float32Array(count * 2); // [currentLife, maxLife]
+
+    for (let i = 0; i < count; i++) {
+      // Spawn along the roof pitch barrier
+      const roofX = (Math.random() - 0.5) * 8.5;
+      const roofY = -2.7 + (Math.abs(roofX) * -0.12); // Sloped deflection roof line
+      const roofZ = (Math.random() - 0.5) * 4;
+
+      pos[i * 3] = roofX;
+      pos[i * 3 + 1] = roofY;
+      pos[i * 3 + 2] = roofZ;
+
+      // Burst velocity upward and outward
+      vel[i * 3] = (Math.random() - 0.45) * 3.2; // Sideways splatter
+      vel[i * 3 + 1] = 2.4 + Math.random() * 3.6; // Upward bounce
+      vel[i * 3 + 2] = (Math.random() - 0.5) * 2.0;
+
+      const maxL = 0.35 + Math.random() * 0.4;
+      life[i * 2] = Math.random() * maxL; // current
+      life[i * 2 + 1] = maxL; // max
+    }
+
+    return { positions: pos, velocities: vel, lifeData: life };
+  }, [count]);
+
+  useFrame((_, delta) => {
+    if (!pointsRef.current) return;
+    const posAttr = pointsRef.current.geometry.attributes.position;
+    const posArr = posAttr.array as Float32Array;
+    const dt = Math.min(delta, 0.05);
+
+    for (let i = 0; i < count; i++) {
+      const pIdx = i * 3;
+      const lIdx = i * 2;
+
+      lifeData[lIdx] -= dt;
+
+      if (lifeData[lIdx] <= 0 || posArr[pIdx + 1] < -3.3) {
+        // Respawn splash particle at roof impact plane
+        const roofX = (Math.random() - 0.5) * 8.5;
+        const roofY = -2.7 + (Math.abs(roofX) * -0.12);
+        const roofZ = (Math.random() - 0.5) * 4;
+
+        posArr[pIdx] = roofX;
+        posArr[pIdx + 1] = roofY;
+        posArr[pIdx + 2] = roofZ;
+
+        velocities[pIdx] = (Math.random() - 0.45) * 3.5;
+        velocities[pIdx + 1] = 2.4 + Math.random() * 3.8;
+        velocities[pIdx + 2] = (Math.random() - 0.5) * 2.0;
+
+        const maxL = 0.35 + Math.random() * 0.4;
+        lifeData[lIdx] = maxL;
+        lifeData[lIdx + 1] = maxL;
+      } else {
+        // Parabolic gravity trajectory
+        velocities[pIdx + 1] -= 9.8 * dt; // Gravity arc
+        posArr[pIdx] += velocities[pIdx] * dt;
+        posArr[pIdx + 1] += velocities[pIdx + 1] * dt;
+        posArr[pIdx + 2] += velocities[pIdx + 2] * dt;
+      }
+    }
+
+    posAttr.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#bae6fd"
+        size={0.10}
+        transparent
+        opacity={0.82}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+// 4. Stylized Impenetrable Roof Barrier Line & Shield
+function ImpenetrableRoofBarrier() {
+  const lineObject = useMemo(() => {
+    const pts = [
+      new THREE.Vector3(-4.8, -3.3, 0),
+      new THREE.Vector3(-2.4, -2.9, 0.4),
+      new THREE.Vector3(0, -2.6, 0.6), // Peak ridge
+      new THREE.Vector3(2.4, -2.9, 0.4),
+      new THREE.Vector3(4.8, -3.3, 0),
+    ];
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineBasicMaterial({
+      color: 0xf59e0b,
+      transparent: true,
+      opacity: 0.65,
+    });
+    return new THREE.Line(geo, mat);
+  }, []);
+
+  return (
+    <group position={[0, 0, 0]}>
+      {/* Glowing Gable Shield Ridge Line */}
+      <primitive object={lineObject} />
+
+      {/* Subtle Structural Deflection Bar */}
+      <mesh position={[0, -2.75, 0]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[9.6, 0.06, 2.8]} />
         <meshStandardMaterial
-          color="#f59e0b"
+          color="#0f172a"
           metalness={0.8}
           roughness={0.2}
-          emissive="#f59e0b"
-          emissiveIntensity={0.25}
-        />
-      </mesh>
-
-      {/* Front Gable Truss Frame */}
-      <group position={[0, 0, 1.9]}>
-        {/* Left rafter */}
-        <mesh position={[-1.1, 0.85, 0]} rotation={[0, 0, -Math.PI / 4.8]}>
-          <boxGeometry args={[2.5, 0.12, 0.12]} />
-          <meshStandardMaterial color="#334155" metalness={0.5} roughness={0.4} />
-        </mesh>
-        {/* Right rafter */}
-        <mesh position={[1.1, 0.85, 0]} rotation={[0, 0, Math.PI / 4.8]}>
-          <boxGeometry args={[2.5, 0.12, 0.12]} />
-          <meshStandardMaterial color="#334155" metalness={0.5} roughness={0.4} />
-        </mesh>
-        {/* Tie Beam (base) */}
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[3.9, 0.12, 0.12]} />
-          <meshStandardMaterial color="#1e293b" metalness={0.6} roughness={0.3} />
-        </mesh>
-        {/* King post center vertical */}
-        <mesh position={[0, 0.85, 0]}>
-          <boxGeometry args={[0.1, 1.7, 0.1]} />
-          <meshStandardMaterial color="#f59e0b" metalness={0.7} roughness={0.3} />
-        </mesh>
-      </group>
-
-      {/* Back Gable Truss Frame */}
-      <group position={[0, 0, -1.9]}>
-        <mesh position={[-1.1, 0.85, 0]} rotation={[0, 0, -Math.PI / 4.8]}>
-          <boxGeometry args={[2.5, 0.12, 0.12]} />
-          <meshStandardMaterial color="#334155" metalness={0.5} roughness={0.4} />
-        </mesh>
-        <mesh position={[1.1, 0.85, 0]} rotation={[0, 0, Math.PI / 4.8]}>
-          <boxGeometry args={[2.5, 0.12, 0.12]} />
-          <meshStandardMaterial color="#334155" metalness={0.5} roughness={0.4} />
-        </mesh>
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[3.9, 0.12, 0.12]} />
-          <meshStandardMaterial color="#1e293b" metalness={0.6} roughness={0.3} />
-        </mesh>
-      </group>
-
-      {/* Shingle Tiles Array */}
-      <group ref={shinglesRef}>
-        {shingleRows.map((shingle, i) => (
-          <mesh
-            key={i}
-            position={shingle.pos}
-            rotation={shingle.rot}
-            scale={shingle.scale}
-          >
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial
-              color={shingle.isAmber ? "#f59e0b" : "#1e2433"}
-              metalness={shingle.isAmber ? 0.8 : 0.4}
-              roughness={shingle.isAmber ? 0.2 : 0.7}
-              emissive={shingle.isAmber ? "#d97706" : "#000000"}
-              emissiveIntensity={shingle.isAmber ? 0.35 : 0}
-            />
-          </mesh>
-        ))}
-      </group>
-
-      {/* Orbiting Construction Data Markers */}
-      <mesh position={[1.8, 1.2, 0.5]}>
-        <octahedronGeometry args={[0.18, 0]} />
-        <meshStandardMaterial
-          color="#fbbf24"
-          emissive="#fbbf24"
-          emissiveIntensity={0.8}
-          wireframe
-        />
-      </mesh>
-      <mesh position={[-1.7, 0.6, -0.8]}>
-        <octahedronGeometry args={[0.14, 0]} />
-        <meshStandardMaterial
-          color="#38bdf8"
-          emissive="#38bdf8"
-          emissiveIntensity={0.6}
-          wireframe
+          transparent
+          opacity={0.4}
         />
       </mesh>
     </group>
   );
 }
 
+// 5. Dynamic Lighting & Occasional Lightning Ambience
+function StormLighting() {
+  const lightRef = useRef<THREE.AmbientLight>(null);
+  const flashTimer = useRef(0);
+
+  useFrame((state, delta) => {
+    if (!lightRef.current) return;
+    flashTimer.current += delta;
+
+    // Subtle natural pulse + random micro-lightning flash
+    if (flashTimer.current > 4.5 && Math.random() > 0.94) {
+      lightRef.current.intensity = 1.4 + Math.random() * 0.8;
+      if (flashTimer.current > 4.8) {
+        flashTimer.current = 0;
+      }
+    } else {
+      lightRef.current.intensity = THREE.MathUtils.lerp(
+        lightRef.current.intensity,
+        0.45,
+        0.1
+      );
+    }
+  });
+
+  return (
+    <>
+      <ambientLight ref={lightRef} intensity={0.45} color="#93c5fd" />
+      <directionalLight position={[5, 10, 5]} intensity={0.9} color="#bae6fd" />
+      <pointLight position={[0, -2.5, 2]} intensity={1.2} color="#f59e0b" distance={8} />
+    </>
+  );
+}
+
 export default function RoofHeroCanvas() {
   return (
-    <div className="relative w-full h-[400px] md:h-[520px] lg:h-[580px] pointer-events-auto">
+    <div className="relative w-full h-[400px] md:h-[520px] lg:h-[580px] overflow-hidden rounded-2xl bg-gradient-to-b from-[#0a0f1d]/90 via-[#070b14]/95 to-[#05070d] border border-slate-800/80 shadow-2xl">
+      {/* Amber Distant Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-44 bg-amber-500/10 blur-[110px] rounded-full pointer-events-none" />
+
       <Canvas
-        camera={{ position: [4.5, 3.2, 4.5], fov: 42 }}
+        camera={{ position: [0, 0.4, 6.2], fov: 48 }}
         dpr={[1, 1.5]}
         gl={{
+          antialias: false,
           powerPreference: "high-performance",
-          antialias: true,
           alpha: true,
         }}
       >
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[10, 15, 8]} intensity={1.5} color="#ffffff" />
-        <directionalLight position={[-10, 8, -5]} intensity={0.8} color="#f59e0b" />
-        <pointLight position={[0, 4, 0]} intensity={1.2} color="#fbbf24" distance={10} />
-
-        <Float speed={1.8} rotationIntensity={0.3} floatIntensity={0.4}>
-          <RoofStructure />
-        </Float>
-
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate={false}
-          maxPolarAngle={Math.PI / 2.1}
-          minPolarAngle={Math.PI / 4}
-        />
+        <StormLighting />
+        <RainStreaks count={600} />
+        <Hailstones count={150} />
+        <RoofImpactSplashes count={180} />
+        <ImpenetrableRoofBarrier />
       </Canvas>
 
-      {/* Subtle Overlay Badge */}
-      <div className="absolute bottom-3 left-4 md:left-6 z-10 flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-950/80 border border-slate-800 backdrop-blur-md text-[11px] font-mono text-slate-400">
-        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span>IKO Architectural Shingle System • Bell County Spec</span>
+      {/* Interactive HUD / Status Chip */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 backdrop-blur-md text-[11px] font-mono text-slate-300 shadow-md">
+        <span className="h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
+        <span className="text-cyan-300 font-bold">Bell County Storm Simulation</span>
+        <span className="text-slate-500">•</span>
+        <span className="text-amber-400 font-semibold">IKO Hail Barrier Active</span>
+      </div>
+
+      {/* Bottom Live Protection Tag */}
+      <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10 flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-950/90 border border-slate-800/90 backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-xs font-bold text-slate-200">
+            Class-4 Impact & 130 MPH Wind Deflection
+          </span>
+        </div>
+        <span className="text-[11px] font-mono text-amber-400 font-semibold hidden sm:inline">
+          60 FPS Real-time
+        </span>
       </div>
     </div>
   );
